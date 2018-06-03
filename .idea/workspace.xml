@@ -2,10 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e8f3ee51-266b-486a-aaf9-cda1d481d7a7" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/out/production/task1/com/company/Main.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/task1/com/company/utilities/Constants.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/GridDynamicsInternshipTask/com/company/CsvFilesConcatenator.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/GridDynamicsInternshipTask/com/company/CsvFilesConcatenator.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/result.csv" beforeDir="false" afterPath="$PROJECT_DIR$/result.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/company/CsvFilesConcatenator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/CsvFilesConcatenator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/utilities/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/utilities/Constants.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -20,11 +20,17 @@
       <file leaf-file-name="CsvFilesConcatenator.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/company/CsvFilesConcatenator.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="322">
-              <caret line="74" column="110" selection-start-line="74" selection-start-column="110" selection-end-line="74" selection-end-column="110" />
+            <state relative-caret-position="-471">
+              <caret line="64" column="123" selection-start-line="64" selection-start-column="123" selection-end-line="64" selection-end-column="123" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#2847#2848#0" expanded="true" />
+                <element signature="e#2918#2919#0" expanded="true" />
+                <element signature="method#printMergedDataOntoFile#0;class#CsvFilesConcatenator#0" />
+                <element signature="docComment;method#hasAttachedData#0;class#CsvFilesConcatenator#0" />
                 <element signature="method#getDataFromFile#0;class#CsvFilesConcatenator#0" />
+                <element signature="docComment;method#getConvertedDataFromCSVintoMap#0;class#CsvFilesConcatenator#0" />
+                <element signature="method#getConvertedDataFromCSVintoMap#0;class#CsvFilesConcatenator#0" />
               </folding>
             </state>
           </provider>
@@ -42,7 +48,7 @@
       <file leaf-file-name="Throwable.java" pinned="false" current-in-tab="false">
         <entry file="jar:///Library/Java/JavaVirtualMachines/jdk-9.0.4.jdk/Contents/Home/lib/src.zip!/java.base/java/lang/Throwable.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="386">
+            <state relative-caret-position="531">
               <caret line="399" column="35" lean-forward="true" selection-start-line="399" selection-start-column="35" selection-end-line="401" selection-end-column="44" />
               <folding>
                 <element signature="e#15782#15783#0" expanded="true" />
@@ -64,8 +70,8 @@
       <file leaf-file-name="result.csv" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/result.csv">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="4" column="38" lean-forward="true" selection-start-line="4" selection-start-column="38" selection-end-line="4" selection-end-column="38" />
+            <state>
+              <caret lean-forward="true" />
             </state>
           </provider>
         </entry>
@@ -136,6 +142,12 @@
       <find>000000012</find>
       <find>write</find>
       <find>resultss</find>
+      <find>buff</find>
+      <find>bufferedWriter</find>
+      <find>commaindex</find>
+      <find>writeMergedDataOntoFile</find>
+      <find>putDataIntoMap</find>
+      <find>getKeyFromLine</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -269,16 +281,15 @@
       <updated>1526281014438</updated>
       <workItem from="1526281020089" duration="19660000" />
       <workItem from="1527500763300" duration="7322000" />
-      <workItem from="1527930016940" duration="13320000" />
+      <workItem from="1527930016940" duration="21041000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="40302000" />
+    <option name="totallyTimeSpent" value="48023000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1280" height="800" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -289,12 +300,12 @@
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
       <window_info anchor="right" id="Maven Projects" order="3" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.054131053" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.13675214" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Terminal" order="7" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="2" />
-      <window_info content_ui="combo" id="Project" order="0" weight="0.110662356" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.110662356" />
       <window_info anchor="right" id="Database" order="3" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32905984" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -383,7 +394,13 @@
           <caret line="60" column="1" lean-forward="true" selection-start-line="60" selection-start-column="1" selection-end-line="60" selection-end-column="1" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#2847#2848#0" expanded="true" />
+            <element signature="e#2918#2919#0" expanded="true" />
+            <element signature="method#printMergedDataOntoFile#0;class#CsvFilesConcatenator#0" />
+            <element signature="docComment;method#hasAttachedData#0;class#CsvFilesConcatenator#0" />
             <element signature="method#getDataFromFile#0;class#CsvFilesConcatenator#0" />
+            <element signature="docComment;method#getConvertedDataFromCSVintoMap#0;class#CsvFilesConcatenator#0" />
+            <element signature="method#getConvertedDataFromCSVintoMap#0;class#CsvFilesConcatenator#0" />
           </folding>
         </state>
       </provider>
@@ -422,7 +439,13 @@
           <caret line="53" column="8" selection-start-line="53" selection-start-column="8" selection-end-line="53" selection-end-column="8" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#2847#2848#0" expanded="true" />
+            <element signature="e#2918#2919#0" expanded="true" />
+            <element signature="method#printMergedDataOntoFile#0;class#CsvFilesConcatenator#0" />
+            <element signature="docComment;method#hasAttachedData#0;class#CsvFilesConcatenator#0" />
             <element signature="method#getDataFromFile#0;class#CsvFilesConcatenator#0" />
+            <element signature="docComment;method#getConvertedDataFromCSVintoMap#0;class#CsvFilesConcatenator#0" />
+            <element signature="method#getConvertedDataFromCSVintoMap#0;class#CsvFilesConcatenator#0" />
           </folding>
         </state>
       </provider>
@@ -532,21 +555,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk-9.0.4.jdk/Contents/Home/lib/src.zip!/java.base/java/lang/Throwable.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="386">
-          <caret line="399" column="35" lean-forward="true" selection-start-line="399" selection-start-column="35" selection-end-line="401" selection-end-column="44" />
-          <folding>
-            <element signature="e#15782#15783#0" expanded="true" />
-            <element signature="e#15818#15819#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/result.csv">
+    <entry file="file://$PROJECT_DIR$/src/com/company/utilities/Constants.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
-          <caret line="4" column="38" lean-forward="true" selection-start-line="4" selection-start-column="38" selection-end-line="4" selection-end-column="38" />
+          <caret line="4" column="59" selection-start-line="4" selection-start-column="59" selection-end-line="4" selection-end-column="59" />
         </state>
       </provider>
     </entry>
@@ -557,20 +569,37 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/company/utilities/Constants.java">
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk-9.0.4.jdk/Contents/Home/lib/src.zip!/java.base/java/lang/Throwable.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="59" selection-start-line="4" selection-start-column="59" selection-end-line="4" selection-end-column="59" />
+        <state relative-caret-position="531">
+          <caret line="399" column="35" lean-forward="true" selection-start-line="399" selection-start-column="35" selection-end-line="401" selection-end-column="44" />
+          <folding>
+            <element signature="e#15782#15783#0" expanded="true" />
+            <element signature="e#15818#15819#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/result.csv">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret lean-forward="true" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/company/CsvFilesConcatenator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="322">
-          <caret line="74" column="110" selection-start-line="74" selection-start-column="110" selection-end-line="74" selection-end-column="110" />
+        <state relative-caret-position="-471">
+          <caret line="64" column="123" selection-start-line="64" selection-start-column="123" selection-end-line="64" selection-end-column="123" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#2847#2848#0" expanded="true" />
+            <element signature="e#2918#2919#0" expanded="true" />
+            <element signature="method#printMergedDataOntoFile#0;class#CsvFilesConcatenator#0" />
+            <element signature="docComment;method#hasAttachedData#0;class#CsvFilesConcatenator#0" />
             <element signature="method#getDataFromFile#0;class#CsvFilesConcatenator#0" />
+            <element signature="docComment;method#getConvertedDataFromCSVintoMap#0;class#CsvFilesConcatenator#0" />
+            <element signature="method#getConvertedDataFromCSVintoMap#0;class#CsvFilesConcatenator#0" />
           </folding>
         </state>
       </provider>
