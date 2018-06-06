@@ -1,7 +1,7 @@
 package com.company.external_parser;
 
 
-
+import com.company.utilities.*;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -51,7 +51,7 @@ public class ExternalMergeSort {
             int counterForLine = 0;
             int fileIndex = 0;
 
-            List<csvFileElement> listOfLines = new ArrayList<csvFileElement>();
+            List<CSVFileElement> listOfLines = new ArrayList<CSVFileElement>();
 
             boolean hasMoreElementsToAdd = true;
             while (hasMoreElementsToAdd) {
@@ -67,7 +67,7 @@ public class ExternalMergeSort {
                 }
 
 
-                System.out.println("PROCESSING LINE: " +line);
+                System.out.println("PROCESSING LINE: " + line);
                 if (line.equals("")) {
                     continue;
                 }
@@ -79,7 +79,7 @@ public class ExternalMergeSort {
                     counterForLine = 0;
                     listOfLines.clear();
                 }
-                listOfLines.add(new csvFileElement(line));
+                listOfLines.add(new CSVFileElement(line));
                 counterForLine++;
             }
 
@@ -94,15 +94,15 @@ public class ExternalMergeSort {
     }
 
     private void addElementsIntoNewFile(List elements, int fileIndex) throws IOException {
-        Comparator<csvFileElement> comparator = new Comparator<csvFileElement>() {
-            public int compare(csvFileElement lhs, csvFileElement rhs) {
+        Comparator<CSVFileElement> comparator = new Comparator<CSVFileElement>() {
+            public int compare(CSVFileElement lhs, CSVFileElement rhs) {
                 int exitFlag = 0;
                 if ((lhs == null) || (rhs == null)) {
                     return -1;
                 }
-                if ((lhs.key != null) && (rhs.key != null)) {
-                    final int firstKey = Integer.parseInt(lhs.key);
-                    final int secondKey = Integer.parseInt(rhs.key);
+                if ((lhs.getKey() != null) && (rhs.getKey() != null)) {
+                    final int firstKey = Integer.parseInt(lhs.getKey());
+                    final int secondKey = Integer.parseInt(rhs.getKey());
                     if (firstKey > secondKey) {
                         return 0;
                     } else {
@@ -157,15 +157,16 @@ public class ExternalMergeSort {
     }
 
     private void sortFilesAndWriteOutput(List<BufferedReader> listOfBufferedReader) {
-        Comparator<csvFileElement> comparator = new Comparator<csvFileElement>() {
-            public int compare(csvFileElement lhs, csvFileElement rhs) {
+        Comparator<CSVFileElement> comparator = new Comparator<CSVFileElement>() {
+            // TODO: DELETE COPY-PASTE
+            public int compare(CSVFileElement lhs, CSVFileElement rhs) {
                 int exitFlag = 0;
                 if ((lhs == null) || (rhs == null)) {
                     return -1;
                 }
-                if ((lhs.key != null) && (rhs.key != null)) {
-                    final int firstKey = Integer.parseInt(lhs.key);
-                    final int secondKey = Integer.parseInt(rhs.key);
+                if ((lhs.getKey() != null) && (rhs.getKey() != null)) {
+                    final int firstKey = Integer.parseInt(lhs.getKey());
+                    final int secondKey = Integer.parseInt(rhs.getKey());
                     if (firstKey > secondKey) {
                         return 0;
                     } else {
@@ -177,10 +178,8 @@ public class ExternalMergeSort {
             }
         };
         try {
-            List<csvFileElement> listOfLinesfromAllFiles = new ArrayList<csvFileElement>();
+            List<CSVFileElement> listOfLinesfromAllFiles = new ArrayList<CSVFileElement>();
             // Read first line from each file
-
-            /********************* START ************************/
 
 
             File sortedFile = new File(this.fileName.substring(0, this.fileName.length() - 4) + "_sorted.csv");
@@ -192,13 +191,12 @@ public class ExternalMergeSort {
                 // reading first row from every file and put it in result
                 for (int currentFile = 0; currentFile < listOfBufferedReader.size(); ++currentFile) {
                     String currentLineFromFile = listOfBufferedReader.get(currentFile).readLine();
-                    System.out.println("PROCESSING LINE [SORT] : " + currentLineFromFile);
-                    System.out.println("listOfBufferedReader.size(): " + listOfBufferedReader.size());
+
 
                     if (currentLineFromFile == null) {
                         amountOfCompletelyReadFiles++;
                     } else {
-                        csvFileElement parsedLine = new csvFileElement(currentLineFromFile);
+                        CSVFileElement parsedLine = new CSVFileElement(currentLineFromFile);
                         //parsedLine.fileIndex = currentFile;
                         listOfLinesfromAllFiles.add(parsedLine);
                     }
@@ -222,13 +220,11 @@ public class ExternalMergeSort {
                     }
                 }
 
-
                 tmpFileBufferWriter.close();
-                if(!tmpFilePath.toFile().renameTo(sortedFile)) {
+                if (!tmpFilePath.toFile().renameTo(sortedFile)) {
                     System.out.println("ERROR: file can't be rewritten");
                 }
             }
-
 
             sortedFileBufferWrirer.flush();
             sortedFileBufferWrirer.close();
@@ -236,26 +232,6 @@ public class ExternalMergeSort {
         } catch (Exception ex) {
             System.out.println("Error:" + ex.getMessage());
 
-        }
-    }
-
-    class csvFileElement {
-
-        public int fileIndex = 0;
-        private String key;
-        private String value;
-
-        public csvFileElement(String line) {
-            final int KEY_LENGTH = 9;
-            this.key = line.substring(0, KEY_LENGTH);
-            final int VALUE_LENGTH = 14;
-            final int commaIndex = 1;
-            this.value = line.substring(KEY_LENGTH + commaIndex, line.length());
-        }
-
-        @Override
-        public String toString() {
-            return (this.key + "," + this.value);
         }
     }
 }
