@@ -7,96 +7,161 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.company.utilities.ParsingUtils.*;
 
 
 public class CSVexternalFileJoiner {
 
-    public static void perform(List<Path> targetFiles) throws IOException {
-        Path fileApath = targetFiles.get(Constants.FILE_A_INDEX);
-        Path fileBpath = targetFiles.get(Constants.FILE_B_INDEX);
-
-        boolean fileAfullyProcessed = false;
-        int currentLineInB = 0;
-        int currentLineInA = 0;
-        Map<String, String> dataFromFileA = convertFileDataOntoMap(fileApath, currentLineInA);
-        List<CSVFileElement> dataFromFileB = getElementFromBucket(fileBpath, currentLineInB);
-        Path resultFilePath = Paths.get("result.csv"); // NOTE: Creating a result file
-        try (BufferedWriter resultBufferedWriter = Files.newBufferedWriter(resultFilePath)) {
-            while (!isFileFullyProcessed(dataFromFileA.size())) {
-              //  int currentLineInB = ;
-                boolean fileBfullyProcessed = false;
-                while (!isFileFullyProcessed(dataFromFileB.size())) {
-                    storeMatchingValuesInFile(dataFromFileA, dataFromFileB, resultFilePath, resultBufferedWriter);
-                    dataFromFileB = getElementFromBucket(fileBpath, currentLineInB);
-                    currentLineInB += Constants.BUCKET_SIZE;
-                }
-                currentLineInA += Constants.BUCKET_SIZE;
-                dataFromFileA = convertFileDataOntoMap(fileApath, currentLineInA);
+    private static int getAmountOfRowsInFile(Path targetFile) {
+        int result = 0;
+        String curLine = null;
+        try(BufferedReader bufferedReader = Files.newBufferedReader(targetFile)) {
+            while ((curLine = bufferedReader.readLine()) != null) {
+                result++;
             }
         } catch (IOException error) {
-            System.out.println("An error has occurd while reading into the file: " + error.getMessage());
+            System.out.println("Unable to work with the file: " + targetFile);
             System.exit(Constants.RUNTIME_ERROR_CODE);
-        }
-    }
-    private static boolean isFileFullyProcessed(int containerSize) {
-        return (containerSize < Constants.BUCKET_SIZE);
-    }
-    private static void storeMatchingValuesInFile(Map<String,String> dataFromFileA, List<CSVFileElement> dataFromFileB, Path resultFilePath, BufferedWriter bufferedWriter) throws IOException {
-            dataFromFileB.forEach((currentElement) -> {
-                if (dataFromFileA.containsKey(currentElement.getKey())) {
-                    CSVFileElement matchingElement = new CSVFileElement(currentElement.toString());
-                    try {
-                        bufferedWriter.write(matchingElement.toString());
-                    } catch (IOException error) {
-                        System.out.println("Value *" + matchingElement.toString() + " couldn't be stored. Reason: " + error.getMessage() + ". Skipping.");
-                    }
-                }
-            });
-
-    }
-
-    private static List<CSVFileElement> getElementFromBucket(Path targetFilePath, int startingLine) throws IOException {
-        // todo: add illegal argument exception for parameters
-        List<CSVFileElement> elementsInBucket = new ArrayList<>();
-        try (BufferedReader bufferedReader = Files.newBufferedReader(targetFilePath)) {
-            String currentLine = null;
-            int currentLineIndex = 0;
-            while (((currentLine = bufferedReader.readLine()) != null) && isCursorInBounds(currentLineIndex)) {
-                CSVFileElement currentElement = new CSVFileElement(currentLine);
-                currentLineIndex++;
-            }
-        }
-        return elementsInBucket;
-    }
-
-
-    private static boolean isCursorInBounds(int currentLineIndex) {
-        int nextLineIndex = currentLineIndex + 1; // we're checking further so the next line won't overflow the bucket
-        return (Constants.BUCKET_SIZE > nextLineIndex);
-    }
-
-    private static Map<String, String> convertFileDataOntoMap(Path targetFilePath, int startingLine) throws IOException {
-        Map<String, String> result = new LinkedHashMap<>();
-        try (BufferedReader bufferedReader = Files.newBufferedReader(targetFilePath)) {
-            String currentLine = null;
-            int currentLineIndex = 0;
-            while (((currentLine = bufferedReader.readLine()) != null) && isCursorInBounds(currentLineIndex)) {
-                CSVFileElement currentElement = new CSVFileElement(currentLine);
-                result.put(currentElement.getKey(), currentElement.getValue());
-                currentLineIndex++;
-            }
         }
         return result;
     }
 
 
-    private static void advancedMethod(List<Path> paths) throws IOException {
+    public static void perform(List<Path> targetFiles) throws IOException {
+        Path fileApath = targetFiles.get(Constants.FILE_A_INDEX); // todo: change the ugly names
+        Path fileBpath = targetFiles.get(Constants.FILE_B_INDEX);
+
+        int currentLineInB = 0;
+        int currentLineInA = 0;
+        int amountOfRowsInA = getAmountOfRowsInFile(fileApath);
+        int amountOfRowsInB = getAmountOfRowsInFile(fileBpath);
+        Map<String, String> dataFromFileA = convertFileDataOntoMap(fileApath, currentLineInA, amountOfRowsInA);
+        List<CSVFileElement> dataFromFileB = getElementFromBucket(fileBpath, currentLineInB, amountOfRowsInB);
+        Path resultFilePath = Paths.get("result.csv"); // NOTE: Creating a result file
+        boolean isFileAprocessed = false;
+        boolean isFileBprocessed = false;
+        try (BufferedWriter resultBufferedWriter = Files.newBufferedWriter(resultFilePath)) {
+            while (!isFileAprocessed) {
+                isFileBprocessed = false;
+                currentLineInB = 0;
+                while (!isFileBprocessed) {
+                    storeMatchingValuesInFile(dataFromFileA, dataFromFileB, resultFilePath, resultBufferedWriter);
+                    currentLineInB += Constants.BUCKET_SIZE;
+                    System.out.println("B WILL BE PROCESSED WITH STAR. LINE : " + currentLineInB);
+                    dataFromFileB = getElementFromBucket(fileBpath, currentLineInB, amountOfRowsInB);
+                    if (currentLineInB >= amountOfRowsInB) {
+                        isFileBprocessed = true;
+                        break;
+                    }
+                }
+                if (currentLineInA >= amountOfRowsInA) {
+                    isFileAprocessed = true;
+                    break;
+                }
+                currentLineInA += Constants.BUCKET_SIZE;
+                dataFromFileA = convertFileDataOntoMap(fileApath, currentLineInA, amountOfRowsInA);
+            }
+        } catch (IOException error) {
+            System.out.println("An error has occured while reading into the file: " + error.getMessage());
+            System.exit(Constants.RUNTIME_ERROR_CODE);
+        }
+    }
+//    private static boolean isFileFullyProcessed(int containerSize) {
+//        System.out.println("Containersize: " + containerSize);
+//        return (containerSize == Constants.BUCKET_SIZE);
+//    }
+    private static void storeMatchingValuesInFile(Map<String,String> dataFromFileA, List<CSVFileElement> dataFromFileB, Path resultFilePath, BufferedWriter bufferedWriter) throws IOException {
+        System.out.println("[SORT] we're working with data from A: ");
+        System.out.println(dataFromFileA);
+        System.out.println("Aaaand data from B: ");
+        System.out.println(dataFromFileB);
+        dataFromFileB.forEach((currentElement) -> {
+            if (dataFromFileA.containsKey(currentElement.getKey())) {
+                String originalValue = dataFromFileA.get(currentElement.getKey());
+                try {
+                    //System.out.println("found matching valur: " + matchingElement);
+                    bufferedWriter.write(currentElement.getKey() + ',' + originalValue + ',' + currentElement.getValue() + "\n");
+                } catch (IOException error) {
+                    System.out.println("Value *" + currentElement.toString() + " couldn't be stored. Reason: " + error.getMessage() + ". Skipping.");
+                }
+            }
+        });
+    }
+
+    private static List<CSVFileElement> getElementFromBucket(Path targetFilePath, int startingLine, int amountOfRows) throws IOException {
+        // todo: add illegal argument exception for parameters
+        List<CSVFileElement> elementsInBucket = new ArrayList<>();
+        try (BufferedReader bufferedReader = Files.newBufferedReader(targetFilePath)) {
+            String currentLine = null;
+            int currentLineIndex = 0;
+            while ((currentLine = bufferedReader.readLine()) != null) {
+                if (startingLine >= amountOfRows) {
+                    System.out.println("FILE B OCNVERTER CUR LINE: " + currentLine);
+                    //startingLine = startingLine - amountOfRows;
+                    currentLineIndex = startingLine - (1 + (startingLine - amountOfRows));
+                    startingLine = startingLine - amountOfRows;
+                    // NOTE: going until the file finished
+                    CSVFileElement currentElement = new CSVFileElement(currentLine);
+                    elementsInBucket.add(currentElement);
+                    currentLineIndex++;
+                } else if (isCursorInBounds(currentLineIndex, startingLine)) {
+                    if (currentLineIndex < startingLine) {
+                        currentLineIndex++;
+                        continue;
+                    }
+                    CSVFileElement currentElement = new CSVFileElement(currentLine);
+                    elementsInBucket.add(currentElement);
+                    currentLineIndex++;
+                }
+            }
+        }
+        System.out.println("BBB FILE converted--- , star.Line: " + startingLine + " results.keysey size: " + elementsInBucket.toString());
+
+        return elementsInBucket;
+    }
+
+
+    private static boolean isCursorInBounds(int currentLineIndex, int startingLine) {
+        int difference = currentLineIndex - startingLine;
+        return (Constants.BUCKET_SIZE > difference);
+    }
+
+
+
+
+    private static Map<String, String> convertFileDataOntoMap(Path targetFilePath, int startingLine, int amountOfRows) throws IOException {
+        Map<String, String> result = new LinkedHashMap<>();
+        try (BufferedReader bufferedReader = Files.newBufferedReader(targetFilePath)) {
+            String currentLine = null;
+            int currentLineIndex = 0;
+            while ((currentLine = bufferedReader.readLine()) != null) {
+                if (startingLine >= amountOfRows) {
+                    currentLineIndex = startingLine - (1 + (startingLine - amountOfRows));
+                    startingLine = startingLine - amountOfRows;
+                    // NOTE: going until the file finished
+                    CSVFileElement currentElement = new CSVFileElement(currentLine);
+                    result.put(currentElement.getKey(), currentElement.getValue());
+                    currentLineIndex++;
+                } else if (isCursorInBounds(currentLineIndex, startingLine)) {
+                    if (currentLineIndex < startingLine) {
+                        currentLineIndex++;
+                        continue;
+                    }
+                    CSVFileElement currentElement = new CSVFileElement(currentLine);
+                    result.put(currentElement.getKey(), currentElement.getValue());
+                    currentLineIndex++;
+                }
+            }
+        }
+        System.out.println("File A converted--- , star.Line: " + startingLine + " results.keysey size: " + result.keySet());
+        return result;
+    }
+
+
+    // NOTE: Legacy advanced method which is using RAM
+    private static void legacyAdvancedMethod(List<Path> paths) throws IOException {
         Path resultFilePath = Paths.get("result.csv"); // NOTE: Creating a result file
         try (BufferedWriter bufferedWriter = Files.newBufferedWriter(resultFilePath)) {
             File fileA = new File(paths.get(0).toUri());
@@ -139,9 +204,6 @@ public class CSVexternalFileJoiner {
         }
     }
 
-
-
-    // todo: change the ugly name
     private static void writeMergedDataOntoFile(Map<String, String> map, List<String> list, BufferedWriter bufferedWriter) throws IOException {
         System.out.println("GIVEN MAP");
         System.out.println(map);

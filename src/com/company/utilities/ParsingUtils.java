@@ -1,6 +1,7 @@
 package com.company.utilities;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,4 +40,27 @@ public class ParsingUtils {
         }
         return result;
     }
+
+    // NOTE: Command line arguments parsing utilities
+    public static void checkArguments(String[] args) {
+        String misleadingMsg = " USE: ./CsvFilesConcadenator filA.csv fileB.csv";
+        if (args.length != Constants.AMOUNT_OF_FILES_REQUIRED) {
+            System.out.println("ERROR: the program revices " + Constants.AMOUNT_OF_FILES_REQUIRED + " parameters.");
+            System.exit(Constants.RUNTIME_ERROR_CODE);
+        }
+
+    }
+
+    private final boolean isFileExtensionCorrect(Path filePath) {
+        String fileExtension = getFileExtension(filePath);
+        int extensionDifference = fileExtension.compareTo(Constants.REQUIRED_EXTERNSION);
+        return extensionDifference == 0;
+    }
+
+    private static final String getFileExtension(Path filePath) {
+        String fileName = filePath.getFileName().toString();
+        int amountOfCharactersInExtension = 3; // csv
+        return fileName.substring(fileName.length() - amountOfCharactersInExtension, fileName.length());
+    }
+
 }

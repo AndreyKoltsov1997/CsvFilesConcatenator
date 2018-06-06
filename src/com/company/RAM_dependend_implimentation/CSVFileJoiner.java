@@ -16,6 +16,10 @@ import java.util.Map;
 import static com.company.utilities.ParsingUtils.*;
 
 public class CSVFileJoiner {
+
+    public static void perform(List<Path> paths) throws IOException {
+        printMergedDataOntoFile(paths);
+    }
     private static void printMergedDataOntoFile(List<Path> paths) throws IOException {
         Map<String, String> result = new LinkedHashMap(getConvertedDataFromCSVintoMap(paths.get(0)));
         List dataFromFile = new ArrayList();
@@ -27,7 +31,6 @@ public class CSVFileJoiner {
             boolean isEndOfLineSymbolNeeded = false; // NOTE: BufferedWrited doesn't provide writing as a line, so we'd add the EOL symbol if needed
             for (int i = 0; i < dataFromFile.size(); ++i) {
                 String currentString = dataFromFile.get(i).toString();
-                // String numberAsKey = currentString.substring(0, Constants.AMOUNT_OF_DIGITS_IN_KEY);
                 String numberAsKey = getKeyFromLine(currentString);
                 if (!result.keySet().contains(numberAsKey)) {
                     continue;
@@ -73,10 +76,8 @@ public class CSVFileJoiner {
         // NOTE: Reading the data from the first .csv file
         for (int i = 0; i < dataFromFile.size(); ++i) {
             String currentString = dataFromFile.get(i).toString();
-            //String numberAsKey = currentString.substring(0, Constants.AMOUNT_OF_DIGITS_IN_KEY);
             String numberAsKey = getKeyFromLine(currentString);
             final int commaIndex = 1; // NOTE: adding the comma index to get the string without it
-            //  String value = currentString.substring(Constants.AMOUNT_OF_DIGITS_IN_KEY + commaIndex, Constants.AMOUNT_OF_DIGITS_IN_KEY + Constants.AMOUNT_OF_CHARACTERS_IN_VALUE + commaIndex);
             String value = getValueFromLine(currentString);
             csvFileData.put(numberAsKey, value);
         }

@@ -1,6 +1,5 @@
 package com.company.external_parser;
 
-
 import com.company.utilities.*;
 import java.io.*;
 import java.nio.file.Files;
@@ -13,8 +12,6 @@ import java.util.List;
 
 
 public class ExternalMergeSort {
-
-    public static final int MAX_LINE_READ = 40000;
     private String fileName;
     private int compareIndex;
 
@@ -65,14 +62,10 @@ public class ExternalMergeSort {
                     hasMoreElementsToAdd = false;
                     break;
                 }
-
-
-                System.out.println("PROCESSING LINE: " + line);
                 if (line.equals("")) {
                     continue;
                 }
-                if (counterForLine >= MAX_LINE_READ) {
-
+                if (counterForLine >= Constants.BUCKET_SIZE) {
                     addElementsIntoNewFile(listOfLines, fileIndex);
                     fileIndex++;
                     // NOTE: Resetting everything
@@ -137,22 +130,21 @@ public class ExternalMergeSort {
                 for (int index = 0; index < amoutOfFiles; index++) {
                     String fileName = generateFileName(index);
                     Path chunkFile = Paths.get(fileName);
-
                     listOfBufferedReader.add(Files.newBufferedReader(chunkFile));
                 }
             } catch (Exception error) {
-                System.out.println("Error: " + error.getMessage());
+                System.out.println("An error has occured while trying to read from file: " + error.getMessage());
                 error.printStackTrace();
+                System.exit(Constants.RUNTIME_ERROR_CODE);
             }
-
             sortFilesAndWriteOutput(listOfBufferedReader);
 
             for (int index = 0; index < listOfBufferedReader.size(); index++) {
                 listOfBufferedReader.get(index).close();
-                //listOfFileReader.get(index).close();
             }
-        } catch (Exception ex) {
-
+        }catch (Exception error) {
+            System.out.println("An error has occured while merging the files " + error.getMessage());
+            System.exit(Constants.RUNTIME_ERROR_CODE);
         }
     }
 
@@ -180,8 +172,6 @@ public class ExternalMergeSort {
         try {
             List<CSVFileElement> listOfLinesfromAllFiles = new ArrayList<CSVFileElement>();
             // Read first line from each file
-
-
             File sortedFile = new File(this.fileName.substring(0, this.fileName.length() - 4) + "_sorted.csv");
             BufferedWriter sortedFileBufferWrirer = Files.newBufferedWriter(sortedFile.toPath());
             boolean hasReadEveryLine = false;
@@ -204,34 +194,32 @@ public class ExternalMergeSort {
                         hasReadEveryLine = true;
                     }
                 }
-
                 System.out.println("Currently having collection: " + listOfLinesfromAllFiles);
                 Collections.sort(listOfLinesfromAllFiles, comparator);
 
                 Path tmpFilePath = Paths.get(this.fileName.substring(0, this.fileName.length() - 4) + "tmp.csv");
                 BufferedWriter tmpFileBufferWriter = Files.newBufferedWriter(tmpFilePath);
-                //  tmpFileBufferWriter.append());
                 for (int i = 0; i < listOfLinesfromAllFiles.size(); ++i) {
                     if (i < (listOfLinesfromAllFiles.size() - 1)) {
                         tmpFileBufferWriter.append(listOfLinesfromAllFiles.get(i).toString() + "\n");
                     } else {
                         tmpFileBufferWriter.append(listOfLinesfromAllFiles.get(i).toString());
-
                     }
                 }
 
                 tmpFileBufferWriter.close();
                 if (!tmpFilePath.toFile().renameTo(sortedFile)) {
-                    System.out.println("ERROR: file can't be rewritten");
+                    System.out.println("ERROR: file " + sortedFile.toString() + " couldn't be rewritten");
+                    System.exit(Constants.RUNTIME_ERROR_CODE);
                 }
             }
 
             sortedFileBufferWrirer.flush();
             sortedFileBufferWrirer.close();
 
-        } catch (Exception ex) {
-            System.out.println("Error:" + ex.getMessage());
-
+        } catch (Exception error) {
+            System.out.println("An error has occured while sorting the files: " + error.getMessage());
+            System.exit(Constants.RUNTIME_ERROR_CODE);
         }
     }
 }
