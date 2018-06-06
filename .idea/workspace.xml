@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e8f3ee51-266b-486a-aaf9-cda1d481d7a7" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/result.csv" beforeDir="false" afterPath="$PROJECT_DIR$/result.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/company/RAM_independent_implimentation/CSVexternalFileJoiner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/RAM_independent_implimentation/CSVexternalFileJoiner.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -89,11 +88,10 @@
       <file leaf-file-name="CSVexternalFileJoiner.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/company/RAM_independent_implimentation/CSVexternalFileJoiner.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="344">
-              <caret line="55" column="21" selection-start-line="55" selection-start-column="21" selection-end-line="55" selection-end-column="21" />
+            <state relative-caret-position="494">
+              <caret line="142" selection-start-line="142" selection-end-line="142" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="method#legacyAdvancedMethod#0;class#CSVexternalFileJoiner#0" />
                 <element signature="method#writeMergedDataOntoFile#0;class#CSVexternalFileJoiner#0" />
               </folding>
             </state>
@@ -103,8 +101,8 @@
       <file leaf-file-name="result.csv" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/result.csv">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="8" column="39" selection-start-line="8" selection-start-column="39" selection-end-line="8" selection-end-column="39" />
+            <state relative-caret-position="75">
+              <caret line="5" selection-start-line="5" selection-end-line="5" />
             </state>
           </provider>
         </entry>
@@ -147,8 +145,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>bufferedWriter</find>
-      <find>resultFilePath</find>
       <find>printMer</find>
       <find>Container size;</find>
       <find>CSVFileJoiner</find>
@@ -175,8 +171,10 @@
       <find>WE HIT</find>
       <find>WE HIT IT</find>
       <find>000000012,ZPMK-N3BU-C33D</find>
-      <find>data keys</find>
       <find>000000015</find>
+      <find>data keys</find>
+      <find>System.o</find>
+      <find>todo</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -332,16 +330,15 @@
       <updated>1526281014438</updated>
       <workItem from="1526281020089" duration="19660000" />
       <workItem from="1527500763300" duration="7322000" />
-      <workItem from="1527930016940" duration="52940000" />
+      <workItem from="1527930016940" duration="53213000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="79922000" />
+    <option name="totallyTimeSpent" value="80195000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1031" height="800" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -357,7 +354,7 @@
       <window_info anchor="bottom" id="Terminal" order="7" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="2" />
-      <window_info content_ui="combo" id="Project" order="0" weight="0.26592517" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.26592517" />
       <window_info anchor="right" id="Database" order="3" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32905984" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -412,12 +409,6 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/com/company/RAM_independent_implimentation/CSVexternalFileJoiner.java</url>
-          <line>35</line>
-          <properties />
-          <option name="timeStamp" value="9" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/com/company/CsvFilesConcatenator.java</url>
           <line>18</line>
@@ -716,13 +707,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/result.csv">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="39" selection-start-line="8" selection-start-column="39" selection-end-line="8" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/company/utilities/CSVFileElement.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1">
@@ -738,13 +722,19 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/result.csv">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/company/RAM_independent_implimentation/CSVexternalFileJoiner.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="344">
-          <caret line="55" column="21" selection-start-line="55" selection-start-column="21" selection-end-line="55" selection-end-column="21" />
+        <state relative-caret-position="494">
+          <caret line="142" selection-start-line="142" selection-end-line="142" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#legacyAdvancedMethod#0;class#CSVexternalFileJoiner#0" />
             <element signature="method#writeMergedDataOntoFile#0;class#CSVexternalFileJoiner#0" />
           </folding>
         </state>
