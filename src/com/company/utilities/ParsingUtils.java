@@ -7,12 +7,12 @@ import java.util.Map;
 
 public class ParsingUtils {
     public static String getKeyFromLine(String line) {
-        return line.substring(0, Constants.amountOfDigitsInKey);
+        return line.substring(0, Constants.AMOUNT_OF_DIGITS_IN_KEY);
     }
 
     public static String getValueFromLine (String line) {
         final int commaIndex = 1;
-        return line.substring(Constants.amountOfDigitsInKey + commaIndex, Constants.amountOfDigitsInKey + Constants.amountOfCharactersInValue + commaIndex);
+        return line.substring(Constants.AMOUNT_OF_DIGITS_IN_KEY + commaIndex, Constants.AMOUNT_OF_DIGITS_IN_KEY + Constants.AMOUNT_OF_CHARACTERS_IN_VALUE + commaIndex);
     }
 
     /**
@@ -22,7 +22,7 @@ public class ParsingUtils {
      */
     public static boolean hasAttachedData(String value) {
         System.out.println("GIVEN VALUE: " + value);
-        return (value.length() > Constants.amountOfCharactersInValue);
+        return (value.length() > Constants.AMOUNT_OF_CHARACTERS_IN_VALUE);
     }
 
     public static Map<String,String> putDataIntoMap(List<String> dataFromFileA) throws IOException {

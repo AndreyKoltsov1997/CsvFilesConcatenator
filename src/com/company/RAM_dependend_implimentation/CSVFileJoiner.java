@@ -27,20 +27,20 @@ public class CSVFileJoiner {
             boolean isEndOfLineSymbolNeeded = false; // NOTE: BufferedWrited doesn't provide writing as a line, so we'd add the EOL symbol if needed
             for (int i = 0; i < dataFromFile.size(); ++i) {
                 String currentString = dataFromFile.get(i).toString();
-                // String numberAsKey = currentString.substring(0, Constants.amountOfDigitsInKey);
+                // String numberAsKey = currentString.substring(0, Constants.AMOUNT_OF_DIGITS_IN_KEY);
                 String numberAsKey = getKeyFromLine(currentString);
                 if (!result.keySet().contains(numberAsKey)) {
                     continue;
                 }
                 final int amountOfSeparators = 1;
-                String csvStrValueWithSeparator = currentString.substring(Constants.amountOfDigitsInKey, Constants.amountOfDigitsInKey + Constants.amountOfCharactersInValue + 1);
+                String csvStrValueWithSeparator = currentString.substring(Constants.AMOUNT_OF_DIGITS_IN_KEY, Constants.AMOUNT_OF_DIGITS_IN_KEY + Constants.AMOUNT_OF_CHARACTERS_IN_VALUE + 1);
                 String valueForCurrentKey = result.get(numberAsKey);
                 if (!hasAttachedData(valueForCurrentKey)) {
                     String endOfLineSymbol = isEndOfLineSymbolNeeded ? "\n" : "";
                     bufferedWriter.write(endOfLineSymbol + numberAsKey + "," + valueForCurrentKey + csvStrValueWithSeparator);
                     isEndOfLineSymbolNeeded = true;
                 } else {
-                    String originalValue = valueForCurrentKey.substring(Constants.amountOfDigitsInKey + amountOfSeparators, Constants.amountOfDigitsInKey + Constants.amountOfCharactersInValue + amountOfSeparators + 1);
+                    String originalValue = valueForCurrentKey.substring(Constants.AMOUNT_OF_DIGITS_IN_KEY + amountOfSeparators, Constants.AMOUNT_OF_DIGITS_IN_KEY + Constants.AMOUNT_OF_CHARACTERS_IN_VALUE + amountOfSeparators + 1);
                     bufferedWriter.write(numberAsKey + "," + originalValue + csvStrValueWithSeparator);
                 }
             }
@@ -73,10 +73,10 @@ public class CSVFileJoiner {
         // NOTE: Reading the data from the first .csv file
         for (int i = 0; i < dataFromFile.size(); ++i) {
             String currentString = dataFromFile.get(i).toString();
-            //String numberAsKey = currentString.substring(0, Constants.amountOfDigitsInKey);
+            //String numberAsKey = currentString.substring(0, Constants.AMOUNT_OF_DIGITS_IN_KEY);
             String numberAsKey = getKeyFromLine(currentString);
             final int commaIndex = 1; // NOTE: adding the comma index to get the string without it
-            //  String value = currentString.substring(Constants.amountOfDigitsInKey + commaIndex, Constants.amountOfDigitsInKey + Constants.amountOfCharactersInValue + commaIndex);
+            //  String value = currentString.substring(Constants.AMOUNT_OF_DIGITS_IN_KEY + commaIndex, Constants.AMOUNT_OF_DIGITS_IN_KEY + Constants.AMOUNT_OF_CHARACTERS_IN_VALUE + commaIndex);
             String value = getValueFromLine(currentString);
             csvFileData.put(numberAsKey, value);
         }

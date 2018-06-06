@@ -21,7 +21,7 @@ public class CsvFilesConcatenator {
 
         try {
             //printMergedDataOntoFile(paths);
-            CSVexternalFileJoiner.perform();
+            CSVexternalFileJoiner.perform(paths);
         } catch (IOException error) {
             System.out.println("An error has occured while reading the data. " + error.getMessage());
             System.exit(Constants.RUNTIME_ERROR_CODE);
