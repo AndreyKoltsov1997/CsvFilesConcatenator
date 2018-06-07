@@ -9,34 +9,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
-import static com.company.utilities.ParsingUtils.*;
-
+/** The "advanced" implimentation, it assumes that none of the tables could fit RAM so ...
+ * ... it sorts them by buckets.  */
 
 public class CSVexternalFileJoiner {
-
-    private static int getAmountOfRowsInFile(Path targetFile) {
-        int result = 0;
-        String curLine = null;
-        try(BufferedReader bufferedReader = Files.newBufferedReader(targetFile)) {
-            while ((curLine = bufferedReader.readLine()) != null) {
-                result++;
-            }
-        } catch (IOException error) {
-            System.out.println("Unable to work with the file: " + targetFile);
-            System.exit(Constants.RUNTIME_ERROR_CODE);
-        }
-        return result;
-    }
-
-
-    private static int calculateBucketCapacity(final int amountOfRowsInFileA, final int amountOfRowsInFileB) {
-        final int BUCKET_CAPACITY_UPPER_BOUND = 2;
-        int capacity = (int) (((amountOfRowsInFileA + amountOfRowsInFileB)/2) * 0.03);
-        if (capacity < BUCKET_CAPACITY_UPPER_BOUND) {
-            capacity = BUCKET_CAPACITY_UPPER_BOUND;
-        }
-        return capacity;
-    }
 
     public static void perform(List<Path> targetFiles) throws IOException {
         Path pathForFileA = targetFiles.get(Constants.FILE_A_INDEX);
@@ -47,8 +23,9 @@ public class CSVexternalFileJoiner {
         int amountOfRowsInB = getAmountOfRowsInFile(pathForFileB);
         Constants.BUCKET_SIZE = calculateBucketCapacity(amountOfRowsInA, amountOfRowsInB);
         Path resultFilePath = Paths.get("result.csv"); // NOTE: Creating a result file
-        boolean isFileAprocessed = false;
-        boolean isFileBprocessed = false;
+        boolean isFileAprocessed = false; // NOTE: those variale are redutant ...
+        boolean isFileBprocessed = false; //..., but the code looks more readable
+
         try (BufferedWriter resultBufferedWriter = Files.newBufferedWriter(resultFilePath)) {
             while (!isFileAprocessed) {
                 if (currentLineInA >= amountOfRowsInA) {
@@ -148,5 +125,30 @@ public class CSVexternalFileJoiner {
             }
         }
         return result;
+    }
+
+    private static int getAmountOfRowsInFile(Path targetFile) {
+        int result = 0;
+        String curLine = null;
+        try(BufferedReader bufferedReader = Files.newBufferedReader(targetFile)) {
+            while ((curLine = bufferedReader.readLine()) != null) {
+                result++;
+            }
+        } catch (IOException error) {
+            System.out.println("Unable to work with the file: " + targetFile);
+            System.exit(Constants.RUNTIME_ERROR_CODE);
+        }
+        return result;
+    }
+
+
+    /** Calculates the optimal bucket size for sorting */
+    private static int calculateBucketCapacity(final int amountOfRowsInFileA, final int amountOfRowsInFileB) {
+        final int BUCKET_CAPACITY_UPPER_BOUND = 2;
+        int capacity = (int) (((amountOfRowsInFileA + amountOfRowsInFileB)/2) * 0.03);
+        if (capacity < BUCKET_CAPACITY_UPPER_BOUND) {
+            capacity = BUCKET_CAPACITY_UPPER_BOUND;
+        }
+        return capacity;
     }
 }

@@ -18,14 +18,25 @@ import static com.company.utilities.ParsingUtils.*;
 public class CSVFileJoiner {
 
     public static void perform(List<Path> paths) throws IOException {
-        printMergedDataOntoFile(paths);
+        try {
+            printMergedDataOntoFile(paths);
+        } catch (IOException error) {
+            System.out.println("An error has occured while processing the files: " + error.getMessage());
+            System.exit(Constants.RUNTIME_ERROR_CODE);
+        }
     }
     private static void printMergedDataOntoFile(List<Path> paths) throws IOException {
-        Map<String, String> result = new LinkedHashMap(getConvertedDataFromCSVintoMap(paths.get(0)));
+        Path pathForFileA = paths.get(Constants.FILE_A_INDEX);
+        if (pathForFileA == null) {
+            throw new IOException("File A hasn't been found");
+        }
+        Map<String, String> result = new LinkedHashMap(getConvertedDataFromCSVintoMap(pathForFileA));
         List dataFromFile = new ArrayList();
-        Path secondCSVfilePath = paths.get(1);
-        dataFromFile.addAll(getDataFromFile(secondCSVfilePath));
-
+        Path pathForFileB = paths.get(Constants.FILE_B_INDEX);
+        if (pathForFileB == null) {
+            throw new IOException("File B hasn't been found");
+        }
+        dataFromFile.addAll(getDataFromFile(pathForFileB));
         Path resultFilePath = Paths.get("result.csv"); // NOTE: Creating a result file
         try (BufferedWriter bufferedWriter = Files.newBufferedWriter(resultFilePath)) {
             boolean isEndOfLineSymbolNeeded = false; // NOTE: BufferedWrited doesn't provide writing as a line, so we'd add the EOL symbol if needed

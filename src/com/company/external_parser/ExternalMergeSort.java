@@ -11,6 +11,12 @@ import java.util.Comparator;
 import java.util.List;
 
 
+// NOTE: At first, I've tried to impliment the "advanced" method of sorting ...
+// ... with External Merge Sort. But it was slow. But I'm looking to return to it so ...
+// ... the class will remain in the project, but unused.
+
+// FOR THE "ADVANCED" METHOD GO TO THE "CSVFileJoiner" class @ RAM_independent_implimentation
+
 public class ExternalMergeSort {
     private String fileName;
     private int compareIndex;

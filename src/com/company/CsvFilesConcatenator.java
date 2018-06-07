@@ -28,6 +28,4 @@ public class CsvFilesConcatenator {
             System.exit(Constants.RUNTIME_ERROR_CODE);
         }
     }
-
-
 }
