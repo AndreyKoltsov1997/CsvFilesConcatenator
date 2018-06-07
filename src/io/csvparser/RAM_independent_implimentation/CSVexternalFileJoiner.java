@@ -1,7 +1,7 @@
-package com.company.RAM_independent_implimentation;
+package io.csvparser.RAM_independent_implimentation;
 
-import com.company.utilities.CSVFileElement;
-import com.company.utilities.Constants;
+import io.csvparser.utilities.CSVFileElement;
+import io.csvparser.utilities.Constants;
 
 import java.io.*;
 import java.nio.file.Files;

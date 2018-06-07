@@ -1,4 +1,4 @@
-package com.company.utilities;
+package io.csvparser.utilities;
 
 import java.io.IOException;
 import java.nio.file.Path;

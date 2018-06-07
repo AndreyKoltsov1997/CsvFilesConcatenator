@@ -1,6 +1,6 @@
-package com.company.RAM_dependend_implimentation;
+package io.csvparser.RAM_dependend_implimentation;
 
-import com.company.utilities.Constants;
+import io.csvparser.utilities.Constants;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.company.utilities.ParsingUtils.*;
+import static io.csvparser.utilities.ParsingUtils.*;
 
 public class CSVFileJoiner {
 

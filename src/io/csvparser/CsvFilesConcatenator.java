@@ -1,15 +1,15 @@
-package com.company;
-import com.company.RAM_dependend_implimentation.CSVFileJoiner;
-import com.company.utilities.Constants;
+package io.csvparser;
+import io.csvparser.RAM_dependend_implimentation.CSVFileJoiner;
+import io.csvparser.RAM_independent_implimentation.CSVexternalFileJoiner;
+import io.csvparser.utilities.Constants;
 
 import java.io.*;
-import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.List;
 
-import com.company.RAM_independent_implimentation.*;
+import io.csvparser.RAM_independent_implimentation.*;
 
 
 public class CsvFilesConcatenator {

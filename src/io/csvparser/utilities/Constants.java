@@ -1,4 +1,4 @@
-package com.company.utilities;
+package io.csvparser.utilities;
 
 public class Constants {
 
