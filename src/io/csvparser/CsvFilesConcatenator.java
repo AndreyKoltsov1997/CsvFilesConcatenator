@@ -16,7 +16,6 @@ public class CsvFilesConcatenator {
 
     public static void main(String[] args) throws IOException {
         List<Path> paths = Arrays.asList(Paths.get("INPUT_A.csv"), Paths.get("INPUT_B.csv"));
-
         try {
             /** "SIMPLE" implimentation: */
 

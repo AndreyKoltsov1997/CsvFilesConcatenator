@@ -9,6 +9,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
+import static io.csvparser.utilities.ParsingUtils.getKeyFromLine;
+import static io.csvparser.utilities.ParsingUtils.hasAttachedData;
+
 /** The "advanced" implimentation, it assumes that none of the tables could fit RAM so ...
  * ... it sorts them by buckets.  */
 
@@ -25,7 +28,8 @@ public class CSVexternalFileJoiner {
         Path resultFilePath = Paths.get("result.csv"); // NOTE: Creating a result file
         boolean isFileAprocessed = false; // NOTE: those variale are redutant ...
         boolean isFileBprocessed = false; //..., but the code looks more readable
-
+        boolean isEndOfLineSymbolNeeded = false; // NOTE: BufferedWrited doesn't provide anything like "writeLine", ...
+                                                // ... but this variable helps to print in a right way
         try (BufferedWriter resultBufferedWriter = Files.newBufferedWriter(resultFilePath)) {
             while (!isFileAprocessed) {
                 if (currentLineInA >= amountOfRowsInA) {
@@ -41,7 +45,8 @@ public class CSVexternalFileJoiner {
                         break;
                     }
                     List<CSVFileElement> dataFromFileB = getElementFromBucket(pathForFileB, currentLineInB, amountOfRowsInB);
-                    storeMatchingValuesInFile(dataFromFileA, dataFromFileB, resultFilePath, resultBufferedWriter);
+                    storeMatchingValuesInFile(dataFromFileA, dataFromFileB, resultFilePath, resultBufferedWriter, isEndOfLineSymbolNeeded);
+                    isEndOfLineSymbolNeeded = true;
                     currentLineInB += Constants.BUCKET_SIZE;
                 }
                 currentLineInA += Constants.BUCKET_SIZE;
@@ -53,17 +58,16 @@ public class CSVexternalFileJoiner {
         }
     }
 
-    private static void storeMatchingValuesInFile(Map<String,String> dataFromFileA, List<CSVFileElement> dataFromFileB, Path resultFilePath, BufferedWriter bufferedWriter) throws IOException {
-        dataFromFileB.forEach((currentElement) -> {
+    private static void storeMatchingValuesInFile(Map<String,String> dataFromFileA, List<CSVFileElement> dataFromFileB, Path resultFilePath, BufferedWriter bufferedWriter, boolean isEndOfLineSymbolNeeded) throws IOException {
+        for (int i = 0; i < dataFromFileB.size(); ++i) {
+            CSVFileElement currentElement = dataFromFileB.get(i);
             if (dataFromFileA.containsKey(currentElement.getKey())) {
                 String originalValue = dataFromFileA.get(currentElement.getKey());
-                try {
-                    bufferedWriter.write(currentElement.getKey() + ',' + originalValue + ',' + currentElement.getValue() + "\n");
-                } catch (IOException error) {
-                    System.out.println("Value *" + currentElement.toString() + " couldn't be stored. Reason: " + error.getMessage() + ". Skipping.");
-                }
+                String endOfLineSymbol = isEndOfLineSymbolNeeded ? "\n" : "";
+                bufferedWriter.write(endOfLineSymbol + currentElement.getKey() + ',' + originalValue + ',' + currentElement.getValue());
             }
-        });
+            isEndOfLineSymbolNeeded = true;
+        }
     }
 
     private static List<CSVFileElement> getElementFromBucket(Path targetFilePath, int startingLine, int amountOfRows) throws IOException {
