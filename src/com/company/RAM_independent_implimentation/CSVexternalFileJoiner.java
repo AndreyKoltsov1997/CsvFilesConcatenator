@@ -29,14 +29,23 @@ public class CSVexternalFileJoiner {
     }
 
 
+    private static int calculateBucketCapacity(final int amountOfRowsInFileA, final int amountOfRowsInFileB) {
+        final int BUCKET_CAPACITY_UPPER_BOUND = 2;
+        int capacity = (int) (((amountOfRowsInFileA + amountOfRowsInFileB)/2) * 0.03);
+        if (capacity < BUCKET_CAPACITY_UPPER_BOUND) {
+            capacity = BUCKET_CAPACITY_UPPER_BOUND;
+        }
+        return capacity;
+    }
+
     public static void perform(List<Path> targetFiles) throws IOException {
         Path pathForFileA = targetFiles.get(Constants.FILE_A_INDEX);
         Path pathForFileB = targetFiles.get(Constants.FILE_B_INDEX);
-
         int currentLineInB = 0;
         int currentLineInA = 0;
         int amountOfRowsInA = getAmountOfRowsInFile(pathForFileA);
         int amountOfRowsInB = getAmountOfRowsInFile(pathForFileB);
+        Constants.BUCKET_SIZE = calculateBucketCapacity(amountOfRowsInA, amountOfRowsInB);
         Path resultFilePath = Paths.get("result.csv"); // NOTE: Creating a result file
         boolean isFileAprocessed = false;
         boolean isFileBprocessed = false;

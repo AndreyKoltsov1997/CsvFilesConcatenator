@@ -12,7 +12,9 @@ public class Constants {
     public final static int FILE_B_INDEX = 1;
 
     // NOTE: RAM-INDEPENDENT method constants
-    public final static int BUCKET_SIZE = 50000;
+    // .. that'd be calculated in some cases, that's ...
+    // .. why it doesn't have "final" qualifier
+    public static int BUCKET_SIZE = 50000;
 
     // NOTE: Command line arguments constants
     public final static int AMOUNT_OF_FILES_REQUIRED = 2;

@@ -15,8 +15,8 @@ import com.company.RAM_independent_implimentation.*;
 public class CsvFilesConcatenator {
 
     public static void main(String[] args) throws IOException {
-       // List<Path> paths = Arrays.asList(Paths.get("/Users/Andrey/Desktop/INPUT_A.csv"), Paths.get("/Users/Andrey/Desktop/INPUT_B.csv"));
-        List<Path> paths = Arrays.asList(Paths.get("/Users/Andrey/Desktop/input_large_file_A.csv"), Paths.get("/Users/Andrey/Desktop/input_large_file_B.csv"));
+        List<Path> paths = Arrays.asList(Paths.get("/Users/Andrey/Desktop/INPUT_A.csv"), Paths.get("/Users/Andrey/Desktop/INPUT_B.csv"));
+       // List<Path> paths = Arrays.asList(Paths.get("/Users/Andrey/Desktop/input_large_file_A.csv"), Paths.get("/Users/Andrey/Desktop/input_large_file_B.csv"));
 
         try {
             /** "SIMPLE" implimentation: */
