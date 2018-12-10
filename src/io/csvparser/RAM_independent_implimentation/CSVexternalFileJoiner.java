@@ -1,5 +1,6 @@
 package io.csvparser.RAM_independent_implimentation;
 
+import io.csvparser.interfaces.IFileProcesser;
 import io.csvparser.utilities.CSVFileElement;
 import io.csvparser.utilities.Constants;
 
@@ -15,7 +16,7 @@ import static io.csvparser.utilities.ParsingUtils.hasAttachedData;
 /** The "advanced" implimentation, it assumes that none of the tables could fit RAM so ...
  * ... it sorts them by buckets.  */
 
-public class CSVexternalFileJoiner {
+public class CSVexternalFileJoiner implements IFileProcesser {
 
 
     public void perform(List<Path> targetFiles) throws IOException {

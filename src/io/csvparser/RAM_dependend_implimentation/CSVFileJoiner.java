@@ -1,5 +1,6 @@
 package io.csvparser.RAM_dependend_implimentation;
 
+import io.csvparser.interfaces.IFileProcesser;
 import io.csvparser.utilities.Constants;
 
 import java.io.BufferedWriter;
@@ -15,17 +16,17 @@ import java.util.Map;
 
 import static io.csvparser.utilities.ParsingUtils.*;
 
-public class CSVFileJoiner {
+public class CSVFileJoiner implements IFileProcesser {
 
-    public static void perform(List<Path> paths) throws IOException {
+    public void perform(List<Path> paths) throws IOException {
         try {
-            printMergedDataOntoFile(paths);
+            this.printMergedDataOntoFile(paths);
         } catch (IOException error) {
             System.out.println("An error has occured while processing the files: " + error.getMessage());
             System.exit(Constants.RUNTIME_ERROR_CODE);
         }
     }
-    private static void printMergedDataOntoFile(List<Path> paths) throws IOException {
+    private void printMergedDataOntoFile(List<Path> paths) throws IOException {
         Path pathForFileA = paths.get(Constants.FILE_A_INDEX);
         if (pathForFileA == null) {
             throw new IOException("File A hasn't been found");
@@ -36,7 +37,7 @@ public class CSVFileJoiner {
         if (pathForFileB == null) {
             throw new IOException("File B hasn't been found");
         }
-        dataFromFile.addAll(getDataFromFile(pathForFileB));
+        dataFromFile.addAll(this.getDataFromFile(pathForFileB));
         Path resultFilePath = Paths.get("result.csv"); // NOTE: Creating a result file
         try (BufferedWriter bufferedWriter = Files.newBufferedWriter(resultFilePath)) {
             boolean isEndOfLineSymbolNeeded = false; // NOTE: BufferedWrited doesn't provide writing as a line, so we'd add the EOL symbol if needed
@@ -65,7 +66,7 @@ public class CSVFileJoiner {
     }
 
 
-    private static List<String> getDataFromFile(Path path) throws IOException {
+    private List<String> getDataFromFile(Path path) throws IOException {
         List<String> dataFromFile = new ArrayList<> ();
         List<String> csvFileRawData = Files.readAllLines(path, Charset.forName("UTF-8"));
         if (csvFileRawData.isEmpty()) {
@@ -79,9 +80,9 @@ public class CSVFileJoiner {
      * @throws IOException when file/data hasn't been found
      * @return mapped KEY(string represents a number, contains 9 characters) - Value (random string, contains 14 characters)
      *  */
-    private static Map<String, String> getConvertedDataFromCSVintoMap(Path csvFilePath) throws IOException {
+    private Map<String, String> getConvertedDataFromCSVintoMap(Path csvFilePath) throws IOException {
         List dataFromFile = new ArrayList();
-        dataFromFile.addAll(getDataFromFile(csvFilePath)); // get data from the first file
+        dataFromFile.addAll(this.getDataFromFile(csvFilePath)); // get data from the first file
         Map<String, String> csvFileData = new LinkedHashMap();
 
         // NOTE: Reading the data from the first .csv file
