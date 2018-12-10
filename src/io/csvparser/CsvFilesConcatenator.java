@@ -25,7 +25,9 @@ public class CsvFilesConcatenator {
             /** I've been testing  "Advanced" implimentation on a files 3 000 000 rows in each. (~80 mb each approx.),
              * .. it took me around a minute to sort. I won't be pushing the files into Git due to the large size. */
 
-            CSVexternalFileJoiner.perform(paths);
+//            CSVexternalFileJoiner.perform(paths);
+            CSVexternalFileJoiner csvExternalFileJoiner = new CSVexternalFileJoiner();
+            csvExternalFileJoiner.perform(paths);
 
         } catch (IOException error) {
             System.out.println("An error has occured while reading the data. " + error.getMessage());
