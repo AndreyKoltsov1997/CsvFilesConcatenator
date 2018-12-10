@@ -1,5 +1,6 @@
 package io.csvparser.RAM_independent_implimentation;
 
+import io.csvparser.interfaces.IFileProcesser;
 import io.csvparser.utilities.CSVFileElement;
 import io.csvparser.utilities.Constants;
 
@@ -15,16 +16,17 @@ import static io.csvparser.utilities.ParsingUtils.hasAttachedData;
 /** The "advanced" implimentation, it assumes that none of the tables could fit RAM so ...
  * ... it sorts them by buckets.  */
 
-public class CSVexternalFileJoiner {
+public class CSVexternalFileJoiner implements IFileProcesser {
 
-    public static void perform(List<Path> targetFiles) throws IOException {
+
+    public void perform(List<Path> targetFiles) throws IOException {
         Path pathForFileA = targetFiles.get(Constants.FILE_A_INDEX);
         Path pathForFileB = targetFiles.get(Constants.FILE_B_INDEX);
         int currentLineInB = 0;
         int currentLineInA = 0;
-        int amountOfRowsInA = getAmountOfRowsInFile(pathForFileA);
-        int amountOfRowsInB = getAmountOfRowsInFile(pathForFileB);
-        Constants.BUCKET_SIZE = calculateBucketCapacity(amountOfRowsInA, amountOfRowsInB);
+        int amountOfRowsInA = this.getAmountOfRowsInFile(pathForFileA);
+        int amountOfRowsInB = this.getAmountOfRowsInFile(pathForFileB);
+        Constants.BUCKET_SIZE = this.calculateBucketCapacity(amountOfRowsInA, amountOfRowsInB);
         Path resultFilePath = Paths.get("result.csv"); // NOTE: Creating a result file
         boolean isFileAprocessed = false; // NOTE: those variale are redutant ...
         boolean isFileBprocessed = false; //..., but the code looks more readable
@@ -36,7 +38,7 @@ public class CSVexternalFileJoiner {
                     isFileAprocessed = true;
                     break;
                 }
-                Map<String, String> dataFromFileA = convertFileDataOntoMap(pathForFileA, currentLineInA, amountOfRowsInA);
+                Map<String, String> dataFromFileA = this.convertFileDataOntoMap(pathForFileA, currentLineInA, amountOfRowsInA);
                 isFileBprocessed = false;
                 currentLineInB = 0;
                 while (!isFileBprocessed) {
@@ -44,8 +46,8 @@ public class CSVexternalFileJoiner {
                         isFileBprocessed = true;
                         break;
                     }
-                    List<CSVFileElement> dataFromFileB = getElementFromBucket(pathForFileB, currentLineInB, amountOfRowsInB);
-                    storeMatchingValuesInFile(dataFromFileA, dataFromFileB, resultFilePath, resultBufferedWriter, isEndOfLineSymbolNeeded);
+                    List<CSVFileElement> dataFromFileB = this.getElementFromBucket(pathForFileB, currentLineInB, amountOfRowsInB);
+                    this.storeMatchingValuesInFile(dataFromFileA, dataFromFileB, resultFilePath, resultBufferedWriter, isEndOfLineSymbolNeeded);
                     isEndOfLineSymbolNeeded = true;
                     currentLineInB += Constants.BUCKET_SIZE;
                 }
@@ -58,7 +60,7 @@ public class CSVexternalFileJoiner {
         }
     }
 
-    private static void storeMatchingValuesInFile(Map<String,String> dataFromFileA, List<CSVFileElement> dataFromFileB, Path resultFilePath, BufferedWriter bufferedWriter, boolean isEndOfLineSymbolNeeded) throws IOException {
+    private void storeMatchingValuesInFile(Map<String,String> dataFromFileA, List<CSVFileElement> dataFromFileB, Path resultFilePath, BufferedWriter bufferedWriter, boolean isEndOfLineSymbolNeeded) throws IOException {
         for (int i = 0; i < dataFromFileB.size(); ++i) {
             CSVFileElement currentElement = dataFromFileB.get(i);
             if (dataFromFileA.containsKey(currentElement.getKey())) {
@@ -70,7 +72,7 @@ public class CSVexternalFileJoiner {
         }
     }
 
-    private static List<CSVFileElement> getElementFromBucket(Path targetFilePath, int startingLine, int amountOfRows) throws IOException {
+    private List<CSVFileElement> getElementFromBucket(Path targetFilePath, int startingLine, int amountOfRows) throws IOException {
         List<CSVFileElement> elementsInBucket = new ArrayList<>();
         try (BufferedReader bufferedReader = Files.newBufferedReader(targetFilePath)) {
             String currentLine = null;
@@ -83,7 +85,7 @@ public class CSVexternalFileJoiner {
                     CSVFileElement currentElement = new CSVFileElement(currentLine);
                     elementsInBucket.add(currentElement);
                     currentLineIndex++;
-                } else if (isCursorInBounds(currentLineIndex, startingLine)) {
+                } else if (this.isCursorInBounds(currentLineIndex, startingLine)) {
                     if (currentLineIndex < startingLine) {
                         currentLineIndex++;
                         continue;
@@ -98,13 +100,13 @@ public class CSVexternalFileJoiner {
     }
 
 
-    private static boolean isCursorInBounds(int currentLineIndex, int startingLine) {
+    private boolean isCursorInBounds(int currentLineIndex, int startingLine) {
         int difference = currentLineIndex - startingLine;
         return (Constants.BUCKET_SIZE > difference);
     }
 
 
-    private static Map<String, String> convertFileDataOntoMap(Path targetFilePath, int startingLine, int amountOfRows) throws IOException {
+    private Map<String, String> convertFileDataOntoMap(Path targetFilePath, int startingLine, int amountOfRows) throws IOException {
         Map<String, String> result = new LinkedHashMap<>();
         try (BufferedReader bufferedReader = Files.newBufferedReader(targetFilePath)) {
             String currentLine = null;
@@ -117,7 +119,7 @@ public class CSVexternalFileJoiner {
                     CSVFileElement currentElement = new CSVFileElement(currentLine);
                     result.put(currentElement.getKey(), currentElement.getValue());
                     currentLineIndex++;
-                } else if (isCursorInBounds(currentLineIndex, startingLine)) {
+                } else if (this.isCursorInBounds(currentLineIndex, startingLine)) {
                     if (currentLineIndex < startingLine) {
                         currentLineIndex++;
                         continue;
@@ -147,7 +149,7 @@ public class CSVexternalFileJoiner {
 
 
     /** Calculates the optimal bucket size for sorting */
-    private static int calculateBucketCapacity(final int amountOfRowsInFileA, final int amountOfRowsInFileB) {
+    private int calculateBucketCapacity(final int amountOfRowsInFileA, final int amountOfRowsInFileB) {
         final int BUCKET_CAPACITY_UPPER_BOUND = 2;
         int capacity = (int) (((amountOfRowsInFileA + amountOfRowsInFileB)/2) * 0.03);
         if (capacity < BUCKET_CAPACITY_UPPER_BOUND) {
